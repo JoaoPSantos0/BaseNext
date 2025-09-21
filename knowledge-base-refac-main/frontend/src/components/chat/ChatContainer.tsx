@@ -36,19 +36,15 @@ const ChatContainer = () => {
     try {
       // Send request to RAG service via our proxy
       const response = await fetch('/api/ai/ask', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: message, // RAG service expects 'question' but we map it in the proxy
-          max_tokens: 512,
-          temperature: 0.7,
-          search_limit: 3,
-          score_threshold: 0.7,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        pergunta: message, // envia exatamente o que a FastAPI espera
         }),
       });
-
+      
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
         throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);

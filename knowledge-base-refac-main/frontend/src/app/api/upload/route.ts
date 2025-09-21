@@ -4,6 +4,8 @@ import { cookies } from 'next/headers'
 export const maxDuration = 300 // 5 minutos para processamento
 export const dynamic = 'force-dynamic'
 
+
+
 export async function POST(request: Request) {
     try {
         // Verificar autenticação usando o mesmo cookie da login

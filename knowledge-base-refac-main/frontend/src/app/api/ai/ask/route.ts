@@ -47,12 +47,11 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('💥 Erro no route.ts:', error);
     return NextResponse.json(
-    {
-      error: 'Falha ao processar a requisição',
-      details: error instanceof Error ? error.message : String(error),
-    },
-    { status: 500, headers: { 'Cache-Control': 'no-store' } }
+      {
+        error: 'Falha ao processar a requisição',
+        details: error instanceof Error ? error.message : String(error),
+      },
+      { status: 500 }
     );
-
   }
 }
