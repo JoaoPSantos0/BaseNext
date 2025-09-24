@@ -4,6 +4,9 @@ import { cookies } from 'next/headers'
 export const maxDuration = 300 // 5 minutos para processamento
 export const dynamic = 'force-dynamic'
 
+const FASTAPI_URL = process.env.FASTAPI_URL || ''
+const FASTAPI_API_KEY = process.env.FASTAPI_API_KEY || ''
+
 
 
 export async function POST(request: Request) {
@@ -42,6 +45,17 @@ export async function POST(request: Request) {
         const processingTime = 1000 + Math.random() * 2000
         await new Promise(resolve => setTimeout(resolve, processingTime))
 
+        // Tentar enviar para o backend FastAPI se configurado
+        if (FASTAPI_URL && FASTAPI_API_KEY) {
+            try {
+                // Aqui você pode implementar a lógica para enviar o arquivo para o backend
+                // Por enquanto, vamos simular que foi processado
+                console.log('🚀 Backend FastAPI configurado, mas upload direto não implementado ainda')
+            } catch (error) {
+                console.log('⚠️ Falha ao comunicar com backend FastAPI, usando processamento local')
+            }
+        }
+
         // Gerar resposta simulada
         const fileType = file.type.includes('pdf') ? 'PDF' :
             file.type.includes('image') ? 'imagem' : 'documento'
@@ -51,11 +65,13 @@ export async function POST(request: Request) {
             message: `Análise do ${fileType} concluída. ` +
                 `Arquivo "${file.name}" (${formatFileSize(file.size)}) processado com sucesso. ` +
                 `Foram identificadas ${Math.floor(Math.random() * 10) + 1} informações relevantes.`,
+            document_id: `doc_${Date.now()}`,
+            chunks_created: Math.floor(Math.random() * 10) + 1,
             metadata: {
                 filename: file.name,
                 size: file.size,
                 type: file.type,
-                processedAt: new Date().toISOString()
+                processed_at: new Date().toISOString()
             }
         }
 

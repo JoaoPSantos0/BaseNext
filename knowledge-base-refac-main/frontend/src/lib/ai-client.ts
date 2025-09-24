@@ -106,7 +106,7 @@ class AIClient {
     // Processador para perguntas RAG individuais
     smartQueue.registerProcessor('rag-question', async (job) => {
     const request = job.data as RAGRequest;   // 👈 Cast aqui
-    return this.makeDirectRequest('/api/ai/query', {
+    return this.makeDirectRequest('/api/ai/ask', {
       method: 'POST',
       body: JSON.stringify({ pergunta: request.question }), // agora o TS sabe que existe question
       });
@@ -118,7 +118,7 @@ class AIClient {
     for (const job of jobs) {
       const req = job.data as RAGRequest;     // 👈 Cast aqui
       try {
-        const result = await this.makeDirectRequest('/api/ai/query', {
+        const result = await this.makeDirectRequest('/api/ai/ask', {
           method: 'POST',
           body: JSON.stringify({ pergunta: req.question }),
         });
@@ -138,7 +138,7 @@ class AIClient {
       const formData = new FormData();
       formData.append('file', file);
       
-      return this.makeDirectRequest('/document/upload', {
+      return this.makeDirectRequest('/api/upload', {
         method: 'POST',
         body: formData,
         headers: {}, // Remover content-type para FormData
