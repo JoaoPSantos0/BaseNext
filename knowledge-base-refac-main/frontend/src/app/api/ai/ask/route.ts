@@ -1,19 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const FASTAPI_URL = process.env.FASTAPI_URL || 'http://127.0.0.1:8000';
-const FASTAPI_API_KEY = process.env.FASTAPI_API_KEY || '';
+const FASTAPI_API_KEY = process.env.FASTAPI_API_KEY || '459012e0a2c6193682e0e546394c34904eb399d94529c16efe9deb55acd6ddc5';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({}));
     const pergunta = body.pergunta?.toString() || '';
     console.log('💡 DEBUG: pergunta recebida no route.ts:', pergunta);
+    console.log('💡 DEBUG: FASTAPI_URL:', FASTAPI_URL);
+    console.log('💡 DEBUG: FASTAPI_API_KEY presente:', !!FASTAPI_API_KEY);
 
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
     };
-    if (FASTAPI_API_KEY) headers['x-api-key'] = FASTAPI_API_KEY;
+    if (FASTAPI_API_KEY) headers['X-API-Key'] = FASTAPI_API_KEY;
 
     const response = await fetch(`${FASTAPI_URL}/auth/query`, {
       method: 'POST',
